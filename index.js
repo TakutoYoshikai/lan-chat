@@ -3,9 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const request = require("request-promise");
 
-
 const port = 7001;
-
 
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -88,6 +86,7 @@ const reader = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout
 });
+
 reader.on('line', function (line) {
   const splitted = line.split(":");
   const to = splitted[0];
@@ -97,12 +96,12 @@ reader.on('line', function (line) {
   });
 });
 reader.on('close', function () {
+
 });
 
 if (host) {
   (async() => {
     await joinNetwork(host, userId);
   })();
-   
 }
 app.listen(parseInt(process.argv[4]));
