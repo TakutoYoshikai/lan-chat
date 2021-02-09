@@ -78,7 +78,6 @@ app.post("/send", (req, res) => {
   res.status(200).send({ message: "OK" });
 });
 
-
 const host = process.argv[2];
 const userId = process.argv[3];
 
@@ -95,8 +94,9 @@ reader.on('line', function (line) {
     console.error(err);
   });
 });
-reader.on('close', function () {
 
+reader.on('close', function () {
+  process.exit(0);
 });
 
 if (host) {
