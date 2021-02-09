@@ -18,6 +18,7 @@ function makeIPv4(ip) {
   const ipAddress = splittedAddress[splittedAddress.length - 1];
   return ipAddress;
 }
+
 function getUserIdFromIP(ipAddress) {
   const filtered = Object.keys(obj).filter(function(userId) {
     return members[userId] === ipAddress;
@@ -104,4 +105,5 @@ if (host) {
     await joinNetwork(host, userId);
   })();
 }
+
 app.listen(parseInt(process.argv[4]));
