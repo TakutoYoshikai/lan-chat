@@ -40,11 +40,11 @@ async function sendRequest(url, obj) {
 }
 
 async function joinNetwork(host, userId) {
-  return await sendRequest("http://" + host + ":" + port + "/join/" + userId, {});
+  return await sendRequest(makeURL(host, port, "/join/" + userId), {});
 }
 
 async function sendMessage(host, to, message) {
-  return await sendRequest("http://" + host + ":" + port + "/send/" + to, {
+  return await sendRequest(makeURL(host, port, "/send/" + to), {
     message,
   });
 }
@@ -54,13 +54,17 @@ app.post("/join/:userId", (req, res) => {
   members[userId] = ipAddress;
 });
 
+function makeURL(host, port, path) {
+  return "http://" + host + ":" + port + path;
+}
+
 app.post("/send/:to", (req, res) => {
   const userId = req.params.to;
   const message = req.body.message;
   const from = getUserIdFromIP(makeIPv4(req.ip));
   const to = members[userId];
 
-  const url = "http://" + to + ":" + port + "/send";
+  const url = makeURL(to, port, "/send");
   
   sendRequest(url, { from: from, message: message })
     .then(res => {
