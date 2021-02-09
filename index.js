@@ -79,7 +79,7 @@ app.post("/send/:to", (req, res) => {
       res.status(200).send({ message: "OK" });
     })
     .catch(err => {
-      console.error(err);
+      //console.error(err);
       res.status(500).send({ message: "Failed" });
     });
 });
@@ -104,7 +104,7 @@ reader.on('line', function (line) {
   const to = splitted[0];
   const message = splitted[1];
   sendMessage(host, to, message).catch(err => {
-    console.error(err);
+    //console.error(err);
   });
 });
 
