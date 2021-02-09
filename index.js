@@ -3,7 +3,15 @@ const app = express();
 const bodyParser = require("body-parser");
 const request = require("request-promise");
 
-const port = 7001;
+const mode = process.argv[2];
+
+let port;
+if (mode === "server") {
+  port = 7000;
+} else if (mode === "client") {
+  port = 7001;
+}
+
 
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -20,7 +28,7 @@ function makeIPv4(ip) {
 }
 
 function getUserIdFromIP(ipAddress) {
-  const filtered = Object.keys(obj).filter(function(userId) {
+  const filtered = Object.keys(members).filter(function(userId) {
     return members[userId] === ipAddress;
   });
   if (filtered.length === 0) {
@@ -67,7 +75,7 @@ app.post("/send/:to", (req, res) => {
   const url = makeURL(to, port, "/send");
   
   sendRequest(url, { from: from, message: message })
-    .then(res => {
+    .then(_ => {
       res.status(200).send({ message: "OK" });
     })
     .catch(err => {
@@ -83,8 +91,8 @@ app.post("/send", (req, res) => {
   res.status(200).send({ message: "OK" });
 });
 
-const host = process.argv[2];
-const userId = process.argv[3];
+const host = process.argv[3];
+const userId = process.argv[4];
 
 const reader = require('readline').createInterface({
     input: process.stdin,
@@ -104,10 +112,13 @@ reader.on('close', function () {
   process.exit(0);
 });
 
-if (host) {
+
+
+if (mode === "server") {
+  app.listen(7001);
+} else if (mode === "client") {
   (async() => {
     await joinNetwork(host, userId);
   })();
+  app.listen(7000);
 }
-
-app.listen(parseInt(process.argv[4]));
