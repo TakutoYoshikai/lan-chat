@@ -87,7 +87,7 @@ app.post("/send/:to", (req, res) => {
 app.post("/send", (req, res) => {
   const from = req.body.from;
   const message = req.body.message;
-  console.log(from + ": " + message);
+  console.log(from + ":" + message);
   res.status(200).send({ message: "OK" });
 });
 
